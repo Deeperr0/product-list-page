@@ -2,15 +2,25 @@ const screenWidth = window.innerWidth;
 const productListContainer = document.querySelector(".product-list");
 const cartList = document.getElementById("products-in-cart");
 const cartContainer = document.querySelector(".cart");
-
+const orderList = document.querySelector(".order-list");
 let productList;
 
-fetch("data.json")
-	.then((response) => response.json())
+fetch("./data.json")
+	.then((response) => {
+		if (!response.ok || response.headers.get("content-length") === "0") {
+			throw new Error("Empty or missing JSON file.");
+		}
+		return response.json();
+	})
 	.then((json) => {
+		if (!json || Object.keys(json).length === 0) {
+			throw new Error("JSON is empty or not valid.");
+		}
 		productList = displayProducts(json);
+	})
+	.catch((error) => {
+		console.error("There was a problem with the fetch operation:", error);
 	});
-
 displayCart();
 
 function displayProducts(products) {
@@ -42,7 +52,7 @@ function displayProducts(products) {
 				<div class="product-info">
 					<p class="product-category preset-4">${product.category}</p>
 					<p class="product-name preset-3">${product.name}</p>
-					<p class="product-price preset-3">$${product.price}</p>
+					<p class="product-price preset-3">$${product.price.toFixed(2)}</p>
 				</div>
 			</div>`;
 		} else {
@@ -68,7 +78,7 @@ function displayProducts(products) {
 				<div class="product-info">
 					<p class="product-category preset-4">${product.category}</p>
 					<p class="product-name preset-3">${product.name}</p>
-					<p class="product-price preset-3">$${product.price}</p>
+					<p class="product-price preset-3">$${product.price.toFixed(2)}</p>
 				</div>
 			</div>`;
 		}
@@ -100,10 +110,13 @@ function displayCart() {
 								${retrievedCartList[itemInCart].quantity}x
 							</p>
 							<p class="cart-item-unit-price preset-4">
-								@ $${retrievedCartList[itemInCart].price}
+								@ $${retrievedCartList[itemInCart].price.toFixed(2)}
 							</p>
 							<p class="cart-item-price preset-4-bold">
-								$${retrievedCartList[itemInCart].price * retrievedCartList[itemInCart].quantity}
+								$${(
+									retrievedCartList[itemInCart].price *
+									retrievedCartList[itemInCart].quantity
+								).toFixed(2)}
 							</p>
 						</div>
 					</div>
@@ -125,7 +138,7 @@ function displayCart() {
 			<div>
 				<div class="flex order-total-container">
 					<p>Order Total</p>
-					<p class="preset-2">$${totalPrice}</p>
+					<p class="preset-2">$${totalPrice.toFixed(2)}</p>
 				</div>
 				<div class="carbon-neutral-container">
 					<div class="flex">
@@ -133,7 +146,7 @@ function displayCart() {
 						<p class="preset-4">This is a <span class="preset-4-bold"> carbon-neutral </span> delivery</p>
 					</div>
 				</div>
-				<button class="preset-3 confirm-order-button">Confirm order</button>
+				<button class="preset-3 confirm-order-button" onclick="handleConfirm()">Confirm order</button>
 			</div>`;
 		} else {
 			document.querySelector(".cart-title").innerHTML = `Your Cart`;
@@ -163,6 +176,7 @@ function addToCart(productName) {
 					[product.name]: {
 						price: product.price,
 						quantity: 1,
+						thumbnail: product.image.thumbnail,
 					},
 				};
 			}
@@ -176,6 +190,7 @@ function addToCart(productName) {
 				[product.name]: {
 					price: product.price,
 					quantity: 1,
+					thumbnail: product.image.thumbnail,
 				},
 			});
 	}
@@ -193,6 +208,10 @@ function handleDeleteItem(item) {
 	displayProducts(productList);
 }
 function retrieveCartList() {
+	if (!document.cookie.includes("cartItems")) {
+		document.cookie = "cartItems=" + JSON.stringify({});
+		return {};
+	}
 	const retrievedCartList = JSON.parse(
 		document.cookie
 			.split("; ")
@@ -217,6 +236,65 @@ function decrementItemQuantity(item) {
 		retrievedCartList[item].quantity--;
 	}
 	document.cookie = "cartItems=" + JSON.stringify(retrievedCartList);
+	displayCart();
+	displayProducts(productList);
+}
+
+function toggleOverlayDisplay() {
+	const overlayContainer = document.querySelector(".overlay-container");
+	if (overlayContainer.classList.contains("hidden")) {
+		overlayContainer.classList.remove("hidden");
+	} else {
+		overlayContainer.classList.add("hidden");
+	}
+}
+
+function handleConfirm() {
+	toggleOverlayDisplay();
+	orderList.innerHTML = "";
+	const retrievedCartList = retrieveCartList();
+	Object.keys(retrievedCartList).map((item) => {
+		orderList.innerHTML += `
+	<div class="order-item flex">
+		<div class="flex">
+			<img src="${retrievedCartList[item].thumbnail}" class="order-thumb"/>
+			<div>
+				<p class="order-item-name preset-4-bold">${item}</p>
+				<div class="flex order-item-stock">
+					<p class="preset-4-bold order-item-quantity">${
+						retrievedCartList[item].quantity
+					}x</p>
+					<p class="preset-4 order-item-unit-price">@ ${parseFloat(
+						retrievedCartList[item].price
+					).toFixed(2)}</p>
+				</div>
+			</div>
+		</div>
+		<div>
+			<p class="order-item-price preset-3">$${parseFloat(
+				retrievedCartList[item].price * retrievedCartList[item].quantity
+			).toFixed(2)}</p>
+		</div>
+	</div>`;
+	});
+	orderList.innerHTML += `
+	<div class="order-total flex">
+		<p class="preset-4 order-total-title">Order Total</p>
+		<p class="preset-2 order-total-price">$${parseFloat(
+			Object.keys(retrievedCartList).reduce(
+				(total, item) =>
+					total +
+					retrievedCartList[item].price * retrievedCartList[item].quantity,
+				0
+			)
+		).toFixed(2)}</p>
+	</div>
+	`;
+}
+
+function handleStartNew() {
+	toggleOverlayDisplay();
+	document.cookie = "cartItems=" + JSON.stringify({});
 	displayCart();
 	displayProducts(productList);
 }
