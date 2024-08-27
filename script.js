@@ -38,7 +38,7 @@ function displayProducts(products) {
 						<source srcset=${
 							product.image.tablet
 						} media="(min-width: 768px)" class="product-image" />
-						<img src=${product.image.desktop} alt={name} class="product-image" />
+						<img src=${product.image.desktop} alt=${product.name} class="product-image" />
 					</picture>
 					<button class="preset-4-bold add-to-cart-button" onclick="addToCart('${
 						product.name
@@ -58,13 +58,9 @@ function displayProducts(products) {
 			<div class="product-card flex-col">
 				<div class="flex-col">
 					<picture class="product-image border-red">
-						<source srcset=${
-							product.image.desktop
-						} media="(min-width: 1024px)" />
-						<source srcset=${
-							product.image.tablet
-						} media="(min-width: 768px)" />
-						<img src=${product.image.desktop} alt={name} />
+						<source srcset=${product.image.desktop} media="(min-width: 1024px)" />
+						<source srcset=${product.image.tablet} media="(min-width: 768px)" />
+						<img src=${product.image.desktop} alt=${product.name} />
 					</picture>
 					<button class="preset-4-bold add-subtract-item">
 						<svg onclick="decrementItemQuantity('${
@@ -143,7 +139,7 @@ function displayCart() {
 				</div>
 				<div class="carbon-neutral-container">
 					<div class="flex">
-						<img src="./assets/images/icon-carbon-neutral.svg" class="carbon-neutral-icon" />
+						<img src="./assets/images/icon-carbon-neutral.svg" class="carbon-neutral-icon" alt="carbon neutral icon" />
 						<p class="preset-4">This is a <span class="preset-4-bold"> carbon-neutral </span> delivery</p>
 					</div>
 				</div>
@@ -153,14 +149,14 @@ function displayCart() {
 			document.querySelector(".cart-title").innerHTML = `Your Cart`;
 			document.querySelector(".cart-total").innerHTML = "";
 			cartList.innerHTML = `<div>
-				<img src="./assets/images/illustration-empty-cart.svg" />
+				<img src="./assets/images/illustration-empty-cart.svg" alt="empty cart image" />
 				<p>Your added items will appear here.</p>
 			</div>`;
 		}
 	} else {
 		document.querySelector(".cart-total").innerHTML = "";
 		cartList.innerHTML = `<div>
-				<img src="./assets/images/illustration-empty-cart.svg" />
+				<img src="./assets/images/illustration-empty-cart.svg" alt="empty cart image" />
 				<p>Your added items will appear here.</p>
 			</div>`;
 	}
@@ -260,7 +256,9 @@ function handleConfirm() {
 		orderList.innerHTML += `
 	<div class="order-item flex">
 		<div class="flex">
-			<img src="${retrievedCartList[item].thumbnail}" class="order-thumb"/>
+			<img src="${
+				retrievedCartList[item].thumbnail
+			}" class="order-thumb" alt="${item}"/>
 			<div>
 				<p class="order-item-name preset-4-bold">${item}</p>
 				<div class="flex order-item-stock">
