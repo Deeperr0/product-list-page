@@ -118,8 +118,13 @@ body {
 }
 .product-image {
 	border-radius: 8px;
+}
+.product-image > * {
+	border-radius: 8px;
 	width: 100%;
 	max-width: 250px;
+	height: 100%;
+	object-fit: cover;
 }
 .preset-1 {
 	font-size: 56px;

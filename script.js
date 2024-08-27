@@ -1,4 +1,3 @@
-const screenWidth = window.innerWidth;
 const productListContainer = document.querySelector(".product-list");
 const cartList = document.getElementById("products-in-cart");
 const cartContainer = document.querySelector(".cart");
@@ -32,20 +31,18 @@ function displayProducts(products) {
 			<!-- Card component -->
 			<div class="product-card flex-col">
 				<div class="flex-col">
-					<img
-						src="${
-							screenWidth > 768
-								? product.image.desktop
-								: screenWidth > 375
-								? product.image.tablet
-								: product.image.mobile
-						}"
-						alt="${product.name}"
-						class="product-image"
-					/>
+					<picture class="product-image">
+						<source srcset=${
+							product.image.desktop
+						} media="(min-width: 1024px)" class="product-image" />
+						<source srcset=${
+							product.image.tablet
+						} media="(min-width: 768px)" class="product-image" />
+						<img src=${product.image.desktop} alt={name} class="product-image" />
+					</picture>
 					<button class="preset-4-bold add-to-cart-button" onclick="addToCart('${
 						product.name
-					}')"">
+					}')">
 						<img src="./assets/images/icon-add-to-cart.svg" /> Add to cart
 					</button>
 				</div>
@@ -60,11 +57,15 @@ function displayProducts(products) {
 			<!-- Card component -->
 			<div class="product-card flex-col">
 				<div class="flex-col">
-					<img
-						src="${product.image.desktop}"
-						alt="${product.name}"
-						class="product-image border-red"
-					/>
+					<picture class="product-image border-red">
+						<source srcset=${
+							product.image.desktop
+						} media="(min-width: 1024px)" />
+						<source srcset=${
+							product.image.tablet
+						} media="(min-width: 768px)" />
+						<img src=${product.image.desktop} alt={name} />
+					</picture>
 					<button class="preset-4-bold add-subtract-item">
 						<svg onclick="decrementItemQuantity('${
 							product.name
