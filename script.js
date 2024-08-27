@@ -43,7 +43,7 @@ function displayProducts(products) {
 					<button class="preset-4-bold add-to-cart-button" onclick="addToCart('${
 						product.name
 					}')">
-						<img src="./assets/images/icon-add-to-cart.svg" /> Add to cart
+						<img src="./assets/images/icon-add-to-cart.svg" alt="Cart icon with plus sign"/> Add to cart
 					</button>
 				</div>
 				<div class="product-info">
