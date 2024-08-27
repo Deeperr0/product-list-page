@@ -66,13 +66,13 @@ function displayProducts(products) {
 						class="product-image border-red"
 					/>
 					<button class="preset-4-bold add-subtract-item">
-						<img src="./assets/images/icon-decrement-quantity.svg" onclick="decrementItemQuantity('${
+						<svg onclick="decrementItemQuantity('${
 							product.name
-						}')" />
+						}')" xmlns="http://www.w3.org/2000/svg" width="10" height="2" fill="none" viewBox="0 0 10 2"><path fill="#fff" d="M0 .375h10v1.25H0V.375Z"/></svg>
 						<p class="preset-4-bold">${retrievedCartList[product.name].quantity}</p>
-						<img src="./assets/images/icon-increment-quantity.svg" onclick="incrementItemQuantity('${
+						<svg onclick="incrementItemQuantity('${
 							product.name
-						}')"/>
+						}')" xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#fff" d="M10 4.375H5.625V0h-1.25v4.375H0v1.25h4.375V10h1.25V5.625H10v-1.25Z"/></svg>
 					</button>
 				</div>
 				<div class="product-info">
@@ -122,7 +122,7 @@ function displayCart() {
 					</div>
 					<div>
 						<button class="remove-cart-item" onclick="handleDeleteItem('${itemInCart}')")">
-							<img src="./assets/images/icon-remove-item.svg" />
+							<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>
 						</button>
 					</div>
 				</div>`;
@@ -244,8 +244,10 @@ function toggleOverlayDisplay() {
 	const overlayContainer = document.querySelector(".overlay-container");
 	if (overlayContainer.classList.contains("hidden")) {
 		overlayContainer.classList.remove("hidden");
+		document.querySelector("body").classList.add("noscroll");
 	} else {
 		overlayContainer.classList.add("hidden");
+		document.querySelector("body").classList.remove("noscroll");
 	}
 }
 

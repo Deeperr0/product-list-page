@@ -1,5 +1,6 @@
 :root {
 	--red: #c73b0f;
+	--red-hover: #952c0b;
 	--rose-900: #260f08;
 	--rose-500: #87635a;
 	--rose-400: #ad8a85;
@@ -44,6 +45,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	overflow-y: scroll;
 }
 .order-confirmation-container {
 	background-color: var(--white);
@@ -70,6 +72,12 @@ body {
 	color: var(--white);
 	margin-top: 32px;
 }
+
+.overlay-button:hover {
+	cursor: pointer;
+	background-color: var(--red-hover);
+}
+
 .order-list {
 	margin-top: 32px;
 	background-color: var(--rose-50);
@@ -188,7 +196,14 @@ body {
 	align-items: center;
 	gap: 8px;
 	border: 1px solid var(--rose-400);
+	transition: all 0.3s ease-in-out;
 }
+.add-to-cart-button:hover {
+	cursor: pointer;
+	color: var(--red);
+	border-color: var(--red);
+}
+
 .product-category {
 	color: var(--rose-500);
 }
@@ -210,6 +225,11 @@ body {
 	padding: 16px 0;
 	text-align: center;
 	color: var(--white);
+	transition: all 0.3s ease-in-out;
+}
+.confirm-order-button:hover {
+	cursor: pointer;
+	background-color: var(--red-hover);
 }
 #products-in-cart {
 	margin-top: 8px;
@@ -230,6 +250,18 @@ body {
 	border-radius: 50%;
 	width: 20px;
 	height: 20px;
+	transition: all 0.3s ease-in-out;
+}
+
+.remove-cart-item:hover {
+	border: 1px solid var(--rose-900);
+	cursor: pointer;
+}
+.remove-cart-item > svg path {
+	transition: all 0.3s ease-in-out;
+}
+.remove-cart-item:hover > svg path {
+	fill: var(--rose-900) !important;
 }
 
 .cart-item-container {
@@ -288,13 +320,27 @@ body {
 	background-color: var(--red);
 	color: var(--white);
 }
-.add-subtract-item img {
+.add-subtract-item svg {
 	width: 20px;
 	height: 20px;
 	padding: 3.75px;
 	border-radius: 50%;
 	border: 1px solid var(--white);
+	transition: all 0.3s ease-in-out;
 }
+.add-subtract-item svg:hover > path {
+	fill: var(--red) !important;
+}
+
+.add-subtract-item svg:hover {
+	background-color: var(--white);
+	cursor: pointer;
+}
+
+.noscroll {
+	overflow: hidden;
+}
+
 @media (width <= 768px) {
 	.main-container {
 		margin: 40px;
@@ -349,6 +395,7 @@ body {
 		text-align: left;
 		width: 100%;
 		border-radius: 8px 8px 0 0;
+		margin: 0;
 		margin-top: auto;
 	}
 	.overlay-container {
@@ -363,4 +410,19 @@ body {
 		justify-content: center;
 		align-items: end;
 	}
+}
+
+footer {
+	width: 100%;
+	border-top: 1px solid var(--rose-100);
+	padding-top: 24px;
+	padding-bottom: 24px;
+}
+footer a {
+	color: var(--red);
+	font-weight: 600;
+}
+
+footer a:hover {
+	color: var(--red-hover);
 }
