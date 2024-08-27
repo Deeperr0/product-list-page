@@ -38,7 +38,7 @@ function displayProducts(products) {
 						<source srcset=${
 							product.image.tablet
 						} media="(min-width: 768px)" class="product-image" />
-						<img src=${product.image.desktop} alt=${product.name} class="product-image" />
+						<img src=${product.image.desktop} alt='${product.name}' class="product-image" />
 					</picture>
 					<button class="preset-4-bold add-to-cart-button" onclick="addToCart('${
 						product.name
@@ -60,7 +60,7 @@ function displayProducts(products) {
 					<picture class="product-image border-red">
 						<source srcset=${product.image.desktop} media="(min-width: 1024px)" />
 						<source srcset=${product.image.tablet} media="(min-width: 768px)" />
-						<img src=${product.image.desktop} alt=${product.name} />
+						<img src=${product.image.desktop} alt='${product.name}' />
 					</picture>
 					<button class="preset-4-bold add-subtract-item">
 						<svg onclick="decrementItemQuantity('${
